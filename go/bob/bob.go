@@ -2,21 +2,24 @@ package bob
 
 import (
 	"strings"
-	"unicode"
 )
 
 // Hey triggers a response from Bob
-func Hey(remark string) (response string) {
-
-	response = "Whatever."
-
-	if strings.HasSuffix(remark, "?") {
-		response = "Sure."
+func Hey(s string) (response string) {
+	s = strings.TrimSpace(s)
+	isQuestion := strings.HasSuffix(s, "?")
+	if len(s) == 0 {
+		return "Fine. Be that way!"
+	} else if isYelling(s) && isQuestion {
+		return "Calm down, I know what I'm doing!"
+	} else if isYelling(s) {
+		return "Whoa, chill out!"
+	} else if isQuestion {
+		return "Sure."
 	}
-	rune := []rune(remark)
-	if strings.HasSuffix(remark, "!") || unicode.IsUpper(rune) {
-		response = "Whoa, chill out!"
-	}
+	return "Whatever."
+}
 
-	return
+func isYelling(s string) bool {
+	return s == strings.ToUpper(s) && s != strings.ToLower(s)
 }
